@@ -70,7 +70,8 @@ query_news = st.text_input("Enter your NewsAPI search:", "")
 
 if query_news:
     st.write(f"You searched for articles about: {query_news}")
-    url = f'https://newsapi.org/v2/everything?q={query_news}&apiKey={news_api_key}'
+    url = f'https://newsapi.org/v2/everything?q={query_news}&language={language}&apiKey={news_api_key}'
+
     
     try:
         response = requests.get(url)
