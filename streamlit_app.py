@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 
 st.title('Recherche de Médias')
 
@@ -51,6 +53,14 @@ try:
             video_thumbnail = item['snippet']['thumbnails']['high']['url']
             video_description = item['snippet']['description']
 
+            col1, col2 = st.columns([1, 3])
+                with col1:
+                    st.image(video_thumbnail)
+                with col2:
+                    st.write(video_title)
+                    if st.button('Voir transcription', key=video_id):
+                        display_transcription(video_id)
+
             # Afficher le titre avec un lien vers la vidéo, la miniature et la description
             st.image(video_thumbnail, caption=video_title)
             st.markdown(f"[{video_title}]({video_url})")
@@ -64,16 +74,19 @@ except HttpError as e:
     st.error(e)
 
 
-url = 'https://raw.githubusercontent.com/michalis0/MGT-502-Data-Science-and-Machine-Learning/main/data/yield_df.csv'
-df_yield= pd.read_csv(url)
+try:
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    transcript = transcript_list.find_generated_transcript(['fr'])
 
-# Assuming df_yield is your DataFrame
-data = df_yield['Item'].value_counts().reset_index()
-data.columns = ['Item', 'count']  # Rename columns for clarity
+    st.subheader("Transcription de la vidéo")
+    transcript_data = transcript.fetch()
+    for text_segment in transcript_data:
+        st.write(f"{text_segment['text']}")
+
+except (TranscriptsDisabled, NoTranscriptFound):
+    st.write("La transcription n'est pas disponible pour cette vidéo.")
+except Exception as e:
+    st.write("Une erreur s'est produite lors de la récupération de la transcription.")
+    st.write(str(e))
 
 
-# Create a pie chart using Plotly Express
-fig = px.pie(data, names='Item', values='count', title='Shares of crops')
-
-# Display the pie chart using Streamlit
-st.plotly_chart(fig)
