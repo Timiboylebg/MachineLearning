@@ -35,7 +35,9 @@ try:
         part='snippet',
         q=query,
         maxResults=10,
-        order='date',
+        locationRadius = 1000km,
+        order='relevance',
+        safeSearch = 'moderate',
         type='video',
         relevanceLanguage='fr'
     )
