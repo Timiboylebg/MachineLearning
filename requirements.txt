@@ -5,3 +5,4 @@ matplotlib
 yfinance
 google-api-python-client
 youtube-transcript-api
+requests
