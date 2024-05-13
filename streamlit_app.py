@@ -28,10 +28,6 @@ query = st.text_input("Entrez votre recherche:", "")
 if query:
     st.write(f"Vous avez recherché: {query}")
 
-if st.session_state['transcript']:
-        st.subheader("Transcription de la vidéo")
-        for text_segment in st.session_state['transcript']:
-            st.write(f"{text_segment['text']}")
 
 # Construire le service YouTube
 try:
@@ -63,13 +59,7 @@ try:
                 st.image(video_thumbnail)
             with col2:
                 st.write(video_title)
-                if st.button('Voir transcription', key=video_id):
-                    transcript = get_transcription(video_id)
-                    if transcript:
-                        st.session_state['transcript'] = transcript
-                    else:
-                        st.session_state['transcript'] = [{"text": "Transcription non disponible."}]
-    
+                
 
     else:
         st.write("Aucun résultat trouvé.")
@@ -79,93 +69,9 @@ except HttpError as e:
     st.error(e)
 
 
-try:
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-    transcript = transcript_list.find_generated_transcript(['fr'])
-
-    st.subheader("Transcription de la vidéo")
-    transcript_data = transcript.fetch()
-    for text_segment in transcript_data:
-        st.write(f"{text_segment['text']}")
-
-except (TranscriptsDisabled, NoTranscriptFound):
-    st.write("La transcription n'est pas disponible pour cette vidéo.")
-except Exception as e:
-    st.write("Une erreur s'est produite lors de la récupération de la transcription.")
-    st.write(str(e))
 
 
 
 
-
-
-
-
-def main():
-    st.title('Recherche de Médias')
-
-    query = st.text_input("Entrez votre recherche:", "")
-
-    if 'transcript' not in st.session_state:
-        st.session_state['transcript'] = None
-
-    if query:
-        display_search_results(query)
-
-    if st.session_state['transcript']:
-        st.subheader("Transcription de la vidéo")
-        for text_segment in st.session_state['transcript']:
-            st.write(f"{text_segment['text']}")
-
-def display_search_results(query):
-    try:
-        youtube = build(api_service_name, api_version, developerKey=api_key)
-        request = youtube.search().list(
-            part='snippet',
-            q=query,
-            maxResults=10,
-            order='date',
-            type='video',
-            relevanceLanguage='fr'
-        )
-        response = request.execute()
-
-        if response.get('items', []):
-            for item in response['items']:
-                video_id = item['id']['videoId']
-                video_title = item['snippet']['title']
-                video_thumbnail = item['snippet']['thumbnails']['high']['url']
-
-                col1, col2 = st.columns([1, 3])
-                with col1:
-                    st.image(video_thumbnail)
-                with col2:
-                    st.write(video_title)
-                    if st.button('Voir transcription', key=video_id):
-                        transcript = get_transcription(video_id)
-                        if transcript:
-                            st.session_state['transcript'] = transcript
-                        else:
-                            st.session_state['transcript'] = [{"text": "Transcription non disponible."}]
-        else:
-            st.write("Aucun résultat trouvé.")
-    except HttpError as e:
-        st.error("Une erreur s'est produite lors de l'appel à l'API YouTube.")
-        st.error(e)
-
-def get_transcription(video_id):
-    try:
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-        transcript = transcript_list.find_generated_transcript(['fr'])
-        return transcript.fetch()
-    except (TranscriptsDisabled, NoTranscriptFound):
-        return None
-    except Exception as e:
-        st.error("Une erreur s'est produite lors de la récupération de la transcription.")
-        st.error(str(e))
-        return None
-
-if __name__ == "__main__":
-    main()
 
 
