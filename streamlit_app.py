@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
-
+import requests
 
 
 api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
@@ -65,22 +65,33 @@ except HttpError as e:
     st.error(e)
 
 
-# Section de recherche NewsAPI
 st.header("News Article Search")
 query_news = st.text_input("Enter your NewsAPI search:", "")
+
 if query_news:
     st.write(f"You searched for articles about: {query_news}")
     url = f'https://newsapi.org/v2/everything?q={query_news}&apiKey={news_api_key}'
-    response = requests.get(url).json()
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Cela lèvera une exception pour les codes de statut 4XX ou 5XX
+        articles_data = response.json()  # Convertit la réponse en JSON
 
-    if response['status'] == 'ok' and response['totalResults'] > 0:
-        articles = response['articles']
-        for article in articles:
-            st.subheader(article['title'])
-            st.write(article['description'])
-            st.write(f"Read more: {article['url']}")
-    else:
-        st.write("No articles found.")
+        if articles_data['status'] == 'ok' and articles_data['totalResults'] > 0:
+            articles = articles_data['articles']
+            for article in articles:
+                st.subheader(article['title'])
+                st.write(article['description'])
+                st.write(f"Read more: {article['url']}")
+        else:
+            st.write("No articles found.")
+            
+    except requests.exceptions.HTTPError as http_err:
+        st.error(f"HTTP error occurred: {http_err}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred: {e}")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
 
 
 
