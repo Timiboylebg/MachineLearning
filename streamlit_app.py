@@ -72,7 +72,8 @@ with col_video:
 
 with col_news:
     st.header("News Article Search")
-    query_news = st.text_input("Enter your NewsAPI search:", "")
+    #query_news = st.text_input("Enter your NewsAPI search:", "")
+    query_news = query
     
     if query_news:
         st.write(f"You searched for articles about: {query_news}")
