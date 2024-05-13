@@ -8,7 +8,7 @@ from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFoun
 import requests
 
 
-api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
+api_key = 'AIzaSyCgAu1-P-cvWnsmIaHRgN4LBFqboXYwUNc'
 news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
