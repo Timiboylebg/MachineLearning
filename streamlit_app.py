@@ -6,21 +6,14 @@ from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 
-st.title('Recherche de Médias')
-
-
-
-
-import streamlit as st
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 
 api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
 api_service_name = 'youtube'
 api_version = 'v3'
 
-st.title('Recherche de Médias')
+st.title('Search for a media that interest you')
+
 
 # Créer une barre de recherche
 query = st.text_input("Entrez votre recherche:", "")
