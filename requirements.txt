@@ -3,10 +3,4 @@ pandas
 plotly
 matplotlib
 yfinance
-scikit-learn
-nltk
-joblib
-re
-torch
-datetime
-huggingface_hub
+
