@@ -9,6 +9,7 @@ from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFoun
 
 
 api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
+news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
 
@@ -63,6 +64,23 @@ except HttpError as e:
     st.error("Une erreur s'est produite lors de l'appel à l'API YouTube.")
     st.error(e)
 
+
+# Section de recherche NewsAPI
+st.header("News Article Search")
+query_news = st.text_input("Enter your NewsAPI search:", "")
+if query_news:
+    st.write(f"You searched for articles about: {query_news}")
+    url = f'https://newsapi.org/v2/everything?q={query_news}&apiKey={news_api_key}'
+    response = requests.get(url).json()
+
+    if response['status'] == 'ok' and response['totalResults'] > 0:
+        articles = response['articles']
+        for article in articles:
+            st.subheader(article['title'])
+            st.write(article['description'])
+            st.write(f"Read more: {article['url']}")
+    else:
+        st.write("No articles found.")
 
 
 
