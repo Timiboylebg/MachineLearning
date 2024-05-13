@@ -54,12 +54,12 @@ try:
             video_description = item['snippet']['description']
 
             col1, col2 = st.columns([1, 3])
-                with col1:
-                    st.image(video_thumbnail)
-                with col2:
-                    st.write(video_title)
-                    if st.button('Voir transcription', key=video_id):
-                        display_transcription(video_id)
+            with col1:
+                st.image(video_thumbnail)
+            with col2:
+                st.write(video_title)
+                if st.button('Voir transcription', key=video_id):
+                    display_transcription(video_id)
 
             # Afficher le titre avec un lien vers la vidéo, la miniature et la description
             st.image(video_thumbnail, caption=video_title)
