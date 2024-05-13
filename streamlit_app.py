@@ -35,7 +35,6 @@ try:
         part='snippet',
         q=query,
         maxResults=10,
-        locationRadius = 1000,
         order='relevance',
         safeSearch = 'moderate',
         type='video',
