@@ -28,6 +28,11 @@ query = st.text_input("Entrez votre recherche:", "")
 if query:
     st.write(f"Vous avez recherché: {query}")
 
+if st.session_state['transcript']:
+        st.subheader("Transcription de la vidéo")
+        for text_segment in st.session_state['transcript']:
+            st.write(f"{text_segment['text']}")
+
 # Construire le service YouTube
 try:
     youtube = build(api_service_name, api_version, developerKey=api_key)
@@ -59,7 +64,12 @@ try:
             with col2:
                 st.write(video_title)
                 if st.button('Voir transcription', key=video_id):
-                    display_transcription(video_id)
+                    transcript = get_transcription(video_id)
+                    if transcript:
+                        st.session_state['transcript'] = transcript
+                    else:
+                        st.session_state['transcript'] = [{"text": "Transcription non disponible."}]
+    
 
     else:
         st.write("Aucun résultat trouvé.")
