@@ -18,6 +18,8 @@ st.title('Search for a media that interest you')
 # Créer une barre de recherche
 query = st.text_input("Entrez votre recherche:", "")
 
+language = st.selectbox("Choose video language:", ["en", "fr"])  # Sélecteur de langue
+
 if query:
     st.write(f"Vous avez recherché: {query}")
 
@@ -34,7 +36,7 @@ try:
         order='relevance',
         safeSearch = 'moderate',
         type='video',
-        relevanceLanguage='fr'
+        relevanceLanguage= language
     )
     response = request.execute()
 
