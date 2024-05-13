@@ -36,7 +36,8 @@ try:
         q=query,
         maxResults=10,
         order='date',
-        type='video'
+        type='video',
+        relevanceLanguage='fr'
     )
     response = request.execute()
 
@@ -46,9 +47,13 @@ try:
             video_title = item['snippet']['title']
             video_id = item['id']['videoId']
             video_url = f'https://www.youtube.com/watch?v={video_id}'
+            video_thumbnail = item['snippet']['thumbnails']['high']['url']
+            video_description = item['snippet']['description']
 
-            # Afficher le titre avec un lien vers la vidéo
+            # Afficher le titre avec un lien vers la vidéo, la miniature et la description
+            st.image(video_thumbnail, caption=video_title)
             st.markdown(f"[{video_title}]({video_url})")
+            st.write(video_description)
 
     else:
         st.write("Aucun résultat trouvé.")
