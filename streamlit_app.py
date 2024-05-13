@@ -61,11 +61,6 @@ try:
                 if st.button('Voir transcription', key=video_id):
                     display_transcription(video_id)
 
-            # Afficher le titre avec un lien vers la vidéo, la miniature et la description
-            st.image(video_thumbnail, caption=video_title)
-            st.markdown(f"[{video_title}]({video_url})")
-            st.write(video_description)
-
     else:
         st.write("Aucun résultat trouvé.")
 
