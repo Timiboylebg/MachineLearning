@@ -39,7 +39,7 @@ with col_video:
         request = youtube.search().list(
             part='snippet',
             q=query,
-            maxResults=10,
+            maxResults=4,
             order='relevance',
             safeSearch = 'moderate',
             type='video',
