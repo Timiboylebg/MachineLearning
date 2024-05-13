@@ -24,7 +24,7 @@ st.title('Recherche de Médias')
 query = st.text_input("Entrez votre recherche:", "")
 
 if query:
-st.write(f"Vous avez recherché: {query}")
+    st.write(f"Vous avez recherché: {query}")
 
 # Construire le service YouTube
 try:
