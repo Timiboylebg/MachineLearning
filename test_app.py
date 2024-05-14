@@ -43,17 +43,19 @@ for item in response.get('items', []):
     print(f"Video ID: {video_id}")
 
 
-st.button("Show Transcript", key=video_id):  # Key must be unique for each button
-    try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        for text in transcript:
-            st.write(text['text'])
-    except TranscriptsDisabled:
-        st.error("Transcript is disabled for this video.")
-    except NoTranscriptFound:
-        st.error("No transcript found for this video.")
-    else:
-        st.write("No results found.")
+st.button("Show Transcript", key=video_id)
+
+# Key must be unique for each button
+try:
+    transcript = YouTubeTranscriptApi.get_transcript(video_id)
+    for text in transcript:
+        st.write(text['text'])
+except TranscriptsDisabled:
+    st.error("Transcript is disabled for this video.")
+except NoTranscriptFound:
+    st.error("No transcript found for this video.")
+else:
+    st.write("No results found.")
 
 
 
