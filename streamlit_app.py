@@ -13,6 +13,24 @@ news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
 
+
+# Fonction pour évaluer le niveau de langue
+def evaluate_language_level(text):
+    words = text.split()
+    num_words = len(words)
+    if num_words < 50:
+        return "A1"
+    elif num_words < 100:
+        return "A2"
+    elif num_words < 150:
+        return "B1"
+    elif num_words < 200:
+        return "B2"
+    elif num_words < 250:
+        return "C1"
+    else:
+        return "C2"
+
 st.title('Search for a media that interest you')
 
 # Sélection de la page
@@ -83,40 +101,37 @@ if page == "Videos":
         st.error("Une erreur s'est produite lors de l'appel à l'API YouTube.")
         st.error(e)
 
-elif page == "News":
-    st.header("News Article Search")
-    #query_news = st.text_input("Enter your NewsAPI search:", "")
-    query_news = query
-    
-    if query_news:
-        st.write(f"You searched for articles about: {query_news}")
-        url = f'https://newsapi.org/v2/everything?q={query_news}&language={language}&apiKey={news_api_key}'
-    
-        
+if page == "News":
+    if query:
+        url = f'https://newsapi.org/v2/everything?q={query}&language={language}&apiKey={news_api_key}&pageSize=5'
         try:
             response = requests.get(url)
-            response.raise_for_status()  # Cela lèvera une exception pour les codes de statut 4XX ou 5XX
-            articles_data = response.json()  # Convertit la réponse en JSON
-    
+            response.raise_for_status()
+            articles_data = response.json()
+
             if articles_data['status'] == 'ok' and articles_data['totalResults'] > 0:
-                articles = articles_data['articles']
-                for article in articles:
-                    st.subheader(article['title'])
-                    st.write(article['description'])
-                    st.write(f"Read more: {article['url']}")
+                for article in articles_data['articles']:
+                    title = article['title']
+                    description = article['description'] or "No description available"  # Fallback for empty description
+                    url = article['url']
+
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        st.subheader(title)
+                        st.write(description)
+                        st.write(f"[Read more]({url})")
+                    with col2:
+                        # Évaluer et afficher le niveau de langue
+                        level = evaluate_language_level(description)
+                        st.button(f"Level: {level}", key=title)  # Use title as unique key for button
+
             else:
                 st.write("No articles found.")
-                
+
         except requests.exceptions.HTTPError as http_err:
             st.error(f"HTTP error occurred: {http_err}")
         except requests.exceptions.RequestException as e:
             st.error(f"An error occurred: {e}")
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
-
-
-
-
-
-
 
