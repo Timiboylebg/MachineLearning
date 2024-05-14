@@ -11,6 +11,25 @@ news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
 
+
+# Fonction pour évaluer le niveau de langue
+def evaluate_language_level(text):
+    words = text.split()
+    num_words = len(words)
+    if num_words < 50:
+        return "A1"
+    elif num_words < 100:
+        return "A2"
+    elif num_words < 150:
+        return "B1"
+    elif num_words < 200:
+        return "B2"
+    elif num_words < 250:
+        return "C1"
+    else:
+        return "C2"
+
+
 # Titre de l'application
 st.title('Search for media that interests you')
 
