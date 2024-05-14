@@ -15,6 +15,8 @@ api_version = 'v3'
 
 st.title('Search for a media that interest you')
 
+# Sélection de la page
+page = st.sidebar.selectbox("Choose a page:", ["Videos", "News"])
 
 # Créer une barre de recherche
 query = st.text_input("Entrez votre recherche:", "")
@@ -25,12 +27,8 @@ if query:
     st.write(f"Vous avez recherché: {query}")
 
 
-
-# Création des colonnes pour YouTube et NewsAPI
-col_video, col_news = st.columns(2)
-
-# Section de recherche pour YouTube dans la première colonne
-with col_video:
+# Section de recherche pour YouTube 
+if page == "Videos":
 # Construire le service YouTube
     try:
         youtube = build(api_service_name, api_version, developerKey=api_key)
@@ -85,7 +83,7 @@ with col_video:
         st.error("Une erreur s'est produite lors de l'appel à l'API YouTube.")
         st.error(e)
 
-with col_news:
+elif page == "News":
     st.header("News Article Search")
     #query_news = st.text_input("Enter your NewsAPI search:", "")
     query_news = query
