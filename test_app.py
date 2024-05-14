@@ -16,9 +16,6 @@ api_version = 'v3'
 st.title('Search for a media that interest you')
 
 
-# Créer une barre de recherche
-query = st.text_input("Entrez votre recherche:", "")
-
 language = st.selectbox("Choose video language:", ["en", "fr"])  # Sélecteur de langue
 
 if query:
@@ -27,50 +24,37 @@ if query:
 
 # Section de recherche pour YouTube dans la première colonne
 
-try:
-    youtube = build(api_service_name, api_version, developerKey=api_key)
 
-    request = youtube.search().list(
-        part='snippet',
-        q=query,
-        maxResults=4,
-        order='relevance',
-        safeSearch='moderate',
-        type='video',
-        relevanceLanguage=language
-    )
-    response = request.execute()
+youtube = build(api_service_name, api_version, developerKey=api_key)
 
-    if response.get('items', []):
-        for item in response['items']:
-            video_title = item['snippet']['title']
-            video_id = item['id']['videoId']
-            video_url = f'https://www.youtube.com/watch?v={video_id}'
-            video_thumbnail = item['snippet']['thumbnails']['high']['url']
-            video_description = item['snippet']['description']
+request = youtube.search().list(
+    part='snippet',
+    q='changement climatique',
+    maxResults=1,
+    order='relevance',
+    safeSearch='moderate',
+    type='video',
+    relevanceLanguage=language
+)
+response = request.execute()
 
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col1:
-                st.image(video_thumbnail)
-            with col2:
-                st.write(video_title)
-                st.write(video_description)
-                st.write(f'[Watch Video]({video_url})')
-            with col3:
-                if st.button("Show Transcript", key=video_id):  # Key must be unique for each button
-                    try:
-                        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-                        for text in transcript:
-                            st.write(text['text'])
-                    except TranscriptsDisabled:
-                        st.error("Transcript is disabled for this video.")
-                    except NoTranscriptFound:
-                        st.error("No transcript found for this video.")
+for item in response.get('items', []):
+    video_id = item['id']['videoId']
+    print(f"Video ID: {video_id}")
+
+
+st.button("Show Transcript", key=video_id):  # Key must be unique for each button
+    try:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        for text in transcript:
+            st.write(text['text'])
+    except TranscriptsDisabled:
+        st.error("Transcript is disabled for this video.")
+    except NoTranscriptFound:
+        st.error("No transcript found for this video.")
     else:
         st.write("No results found.")
 
-except HttpError as e:
-    st.error("An error occurred with the YouTube API.")
-    st.error(e)
+
 
 
