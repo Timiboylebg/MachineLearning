@@ -68,10 +68,9 @@ if page == "Videos":
         st.error("An error occurred with the YouTube API.")
         st.error(e)
 
-elif page == "News":
-    # Section pour les articles de presse
+if page == "News":
     if query:
-        url = f'https://newsapi.org/v2/everything?q={query}&language={language}&apiKey={news_api_key}'
+        url = f'https://newsapi.org/v2/everything?q={query}&language={language}&apiKey={news_api_key}&pageSize=5'
         try:
             response = requests.get(url)
             response.raise_for_status()
@@ -79,9 +78,20 @@ elif page == "News":
 
             if articles_data['status'] == 'ok' and articles_data['totalResults'] > 0:
                 for article in articles_data['articles']:
-                    st.subheader(article['title'])
-                    st.write(article['description'])
-                    st.write(f"Read more: {article['url']}")
+                    title = article['title']
+                    description = article['description'] or "No description available"  # Fallback for empty description
+                    url = article['url']
+
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        st.subheader(title)
+                        st.write(description)
+                        st.write(f"[Read more]({url})")
+                    with col2:
+                        # Évaluer et afficher le niveau de langue
+                        level = evaluate_language_level(description)
+                        st.button(f"Level: {level}", key=title)  # Use title as unique key for button
+
             else:
                 st.write("No articles found.")
 
