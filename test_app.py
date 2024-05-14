@@ -18,8 +18,6 @@ st.title('Search for a media that interest you')
 
 language = st.selectbox("Choose video language:", ["en", "fr"])  # Sélecteur de langue
 
-if query:
-    st.write(f"Vous avez recherché: {query}")
 
 
 # Section de recherche pour YouTube dans la première colonne
