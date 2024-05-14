@@ -57,12 +57,26 @@ with col_video:
                 video_thumbnail = item['snippet']['thumbnails']['high']['url']
                 video_description = item['snippet']['description']
     
-                col1, col2 = st.columns([1, 3])
+                col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     st.image(video_thumbnail)
                 with col2:
                     st.write(video_title)
-                    
+                with col3:
+                    # Bouton pour afficher le transcript
+                    if st.button("Show Transcript", key=f"btn_{video_id}"):  # Clé unique pour chaque bouton
+                        try:
+                            # Récupération du transcript de la vidéo
+                            transcript = YouTubeTranscriptApi.get_transcript(video_id)
+                            # Affichage du transcript
+                            for text in transcript:
+                                st.write(text['text'])
+                        except TranscriptsDisabled:
+                            st.error("Transcripts are disabled for this video.")
+                        except NoTranscriptFound:
+                            st.error("No transcript found for this video.")
+                        except Exception as e:
+                            st.error(f"An error occurred: {str(e)}")
     
         else:
             st.write("Aucun résultat trouvé.")
