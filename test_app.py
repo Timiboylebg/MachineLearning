@@ -6,8 +6,8 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 
 # Configuration API
-api_key = 'YOUR_YOUTUBE_API_KEY'
-news_api_key = 'YOUR_NEWSAPI_KEY'
+api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
+news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
 
