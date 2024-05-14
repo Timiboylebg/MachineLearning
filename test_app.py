@@ -16,31 +16,6 @@ api_version = 'v3'
 st.title('Search for a media that interest you')
 
 
-language = st.selectbox("Choose video language:", ["en", "fr"])  # Sélecteur de langue
-
-
-
-# Section de recherche pour YouTube dans la première colonne
-
-
-youtube = build(api_service_name, api_version, developerKey=api_key)
-
-request = youtube.search().list(
-    part='snippet',
-    q='changement climatique',
-    maxResults=1,
-    order='relevance',
-    safeSearch='moderate',
-    type='video',
-    relevanceLanguage=language
-)
-response = request.execute()
-
-for item in response.get('items', []):
-    video_id = item['id']['videoId']
-    print(f"Video ID: {video_id}")
-
-
 st.button("Show Transcript", key=video_id)
 
 # Key must be unique for each button
