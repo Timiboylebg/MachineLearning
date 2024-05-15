@@ -79,20 +79,30 @@ if page == "Videos":
                 with col2:
                     st.write(video_title)
                 with col3:
-                    # Bouton pour afficher le transcript
-                    if st.button("Show Transcript", key=f"btn_{video_id}"):  # Clé unique pour chaque bouton
-                        try:
-                            # Récupération du transcript de la vidéo
-                            transcript = YouTubeTranscriptApi.get_transcript(video_id)
-                            # Affichage du transcript
-                            for text in transcript:
-                                st.write(text['text'])
-                        except TranscriptsDisabled:
-                            st.error("Transcripts are disabled for this video.")
-                        except NoTranscriptFound:
-                            st.error("No transcript found for this video.")
-                        except Exception as e:
-                            st.error(f"An error occurred: {str(e)}")
+                    try:
+                        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+                        full_text = " ".join([text['text'] for text in transcript])
+                        level = evaluate_language_level(full_text)
+                        st.write("Language Level:", level)
+                    except Exception as e:
+                        st.error(f"An error occurred: {str(e)}")
+                    
+                    
+                st.markdown("---")  # Ajoute un séparateur visuel
+                # Bouton pour afficher le transcript
+                if st.button("Show Transcript", key=f"btn_{video_id}"):  # Clé unique pour chaque bouton
+                    try:
+                        # Récupération du transcript de la vidéo
+                        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+                        # Affichage du transcript
+                        for text in transcript:
+                            st.write(text['text'])
+                    except TranscriptsDisabled:
+                        st.error("Transcripts are disabled for this video.")
+                    except NoTranscriptFound:
+                        st.error("No transcript found for this video.")
+                    except Exception as e:
+                        st.error(f"An error occurred: {str(e)}")
     
         else:
             st.write("Aucun résultat trouvé.")
