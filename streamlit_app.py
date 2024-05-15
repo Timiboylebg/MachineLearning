@@ -88,8 +88,6 @@ if page == "Videos":
                     except Exception as e:
                         st.error(f"An error occurred: {str(e)}")
 
-                
-                st.markdown("---")  # Ajoute un séparateur visuel
                 # Bouton pour afficher le transcript
                 if st.button("Show Transcript", key=f"btn_{video_id}"):  # Clé unique pour chaque bouton
                     try:
@@ -104,7 +102,7 @@ if page == "Videos":
                         st.error("No transcript found for this video.")
                     except Exception as e:
                         st.error(f"An error occurred: {str(e)}")
-    
+                st.markdown("---")
         else:
             st.write("Aucun résultat trouvé.")
     
@@ -135,7 +133,7 @@ if page == "News":
                         # Évaluer et afficher le niveau de langue
                         level = evaluate_language_level(description)
                         st.button(f"Level: {level}", key=title)  # Use title as unique key for button
-
+                    st.markdown("---")
             else:
                 st.write("No articles found.")
 
