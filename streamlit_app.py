@@ -135,8 +135,10 @@ if page == "News":
                         st.write(f"[Read more]({url})")
 
                         words = description.split()
+                        description_with_buttons = " ".join([f'<button class="word-button" onclick="document.getElementById(\'{title}_{word}\').click();">{word}</button>' for word in words])
+                        st.markdown(description_with_buttons, unsafe_allow_html=True)
                         for word in words:
-                            if st.button(word, key=f"{title}_{word}"):
+                            if st.button(word, key=f"{title}_{word}", on_click=None):  # hidden buttons
                                 st.session_state.vocab_list.append(word)
                                 st.success(f"Added '{word}' to vocabulary list.")
                                 
