@@ -6,7 +6,7 @@ from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 import requests
-from google.cloud import translate_v2 as translate
+
 
 
 api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
@@ -164,8 +164,7 @@ def translate_word(word):
     if response.status_code == 200:
         data = response.json()
         return data['translatedText']
-    else:
-        return "Traduction non trouvée."
+
 
 
 vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
