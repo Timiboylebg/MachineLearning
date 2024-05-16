@@ -152,13 +152,32 @@ if page == "News":
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
 
+def translate_word(word):
+    url = "https://libretranslate.com/translate"
+    params = {
+        'q': word,
+        'source': 'fr',
+        'target': 'en',
+        'format': 'text'
+    }
+    response = requests.post(url, data=params)
+    if response.status_code == 200:
+        data = response.json()
+        return data['translatedText']
+    else:
+        return "Traduction non trouvée."
+
 
 vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
 
 
 if page == "Vocabulary List":
     st.header("Vocabulary List")
-    
+    for word in st.session_state.vocab_list:
+        st.write(f"**{word}**")
+        if st.button(f"Traduire {word}", key=word):
+            translation = translate_word(word)
+            st.write(f"Traduction en anglais: {translation}")
 
 
 
