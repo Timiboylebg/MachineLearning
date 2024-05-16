@@ -166,18 +166,17 @@ if page == "News":
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
 
-if 'vocab_list' not in st.session_state:
-    st.session_state.vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
+
+vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
 
 
 if page == "Vocabulary List":
     st.header("Vocabulary List")
-    if st.session_state.vocab_list:
-        for word in st.session_state.vocab_list:
-            st.write(f"**{word}**")
-            if st.button(f"Traduire {word}", key=word):
-                translation = translate_word(word)
-                st.write(f"Traduction en anglais: {translation}")
+    for word in vocab_list:
+        st.write(f"**{word}**")
+        if st.button(f"Traduire {word}", key=word):
+            translation = translate_word(word)
+            st.write(f"Traduction en anglais: {translation}")
 
 
 
