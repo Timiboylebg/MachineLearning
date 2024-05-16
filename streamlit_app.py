@@ -13,6 +13,8 @@ news_api_key = '00bd707fafb54308842886874d3b23a5'
 api_service_name = 'youtube'
 api_version = 'v3'
 
+if 'vocab_list' not in st.session_state:
+    st.session_state.vocab_list = []
 
 # Fonction pour évaluer le niveau de langue
 def evaluate_language_level(text):
@@ -36,7 +38,7 @@ st.sidebar.image("logo.png", width=200)
 st.title('Search for a media that interest you')
 
 # Sélection de la page
-page = st.sidebar.selectbox("Choose a page:", ["Videos", "News"])
+page = st.sidebar.selectbox("Choose a page:", ["Videos", "News","Vocabulary List"])
 
 # Créer une barre de recherche
 query = st.text_input("Entrez votre recherche:", "")
@@ -131,6 +133,13 @@ if page == "News":
                         st.subheader(title)
                         st.write(description)
                         st.write(f"[Read more]({url})")
+
+                        words = description.split()
+                        for word in words:
+                            if st.button(word, key=f"{title}_{word}"):
+                                st.session_state.vocab_list.append(word)
+                                st.success(f"Added '{word}' to vocabulary list.")
+                                
                     with col2:
                         # Évaluer et afficher le niveau de langue
                         level = evaluate_language_level(description)
@@ -145,4 +154,9 @@ if page == "News":
             st.error(f"An error occurred: {e}")
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
-
+if page == "Vocabulary List":
+    st.header("Vocabulary List")
+    if st.session_state.vocab_list:
+        st.write(", ".join(st.session_state.vocab_list))
+    else:
+        st.write("No words added yet.")
