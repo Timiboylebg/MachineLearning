@@ -6,6 +6,7 @@ from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 import requests
+from google.cloud import translate_v2 as translate
 
 
 api_key = 'AIzaSyBHktH6XIGar0v7UStL1reXQUyx8aqxHwg'
@@ -16,21 +17,6 @@ api_version = 'v3'
 if 'vocab_list' not in st.session_state:
     st.session_state.vocab_list = []
 
-
-def translate_word(word):
-    url = "https://translation.googleapis.com/language/translate/v2"
-    params = {
-        'q': word,
-        'source': 'fr',
-        'target': 'en',
-        'key': 'AIzaSyC3Abt1-sSdcgg6vrbTPhnc1SHAcU8niGc'
-    }
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        data = response.json()
-        return data['data']['translations'][0]['translatedText']
-    else:
-        return "Traduction non trouvée."
         
 # Fonction pour évaluer le niveau de langue
 def evaluate_language_level(text):
@@ -172,11 +158,7 @@ vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
 
 if page == "Vocabulary List":
     st.header("Vocabulary List")
-    for word in vocab_list:
-        st.write(f"**{word}**")
-        if st.button(f"Traduire {word}", key=word):
-            translation = translate_word(word)
-            st.write(f"Traduction en anglais: {translation}")
+    
 
 
 
