@@ -160,10 +160,15 @@ def translate_word(word):
         'target': 'en',
         'format': 'text'
     }
-    response = requests.post(url, data=params)
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    response = requests.post(url, data=params, headers=headers)
     if response.status_code == 200:
         data = response.json()
         return data['translatedText']
+    else:
+        return "Traduction non trouvée."
 
 
 
