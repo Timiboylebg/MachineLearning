@@ -134,10 +134,16 @@ if page == "News":
                         st.write(description)
                         st.write(f"[Read more]({url})")
 
+                        # Séparer les mots de la description et ajouter des boutons pour les mots sans bordure
                         words = description.split()
-                        
-                        description_with_buttons = " ".join([f'<button class="word-button" onclick="fetch(\'/add_word?word={word}\')">{word}</button>' for word in words])
+                        description_with_buttons = " ".join([f'<button class="word-button" onclick="document.getElementById(\'hidden_form_{word}\').submit();">{word}</button>' for word in words])
                         st.markdown(description_with_buttons, unsafe_allow_html=True)
+                        
+                        # Formulaires invisibles pour ajouter les mots
+                        for word in words:
+                            with st.form(key=f"hidden_form_{word}", clear_on_submit=True):
+                                st.form_submit_button(label=word, on_click=lambda w=word: st.session_state.vocab_list.append(w))
+                                
                         for word in words:
                             if st.button(word, key=f"{title}_{word}"):  # hidden buttons
                                 st.session_state.vocab_list.append(word)
