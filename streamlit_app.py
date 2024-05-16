@@ -134,20 +134,6 @@ if page == "News":
                         st.write(description)
                         st.write(f"[Read more]({url})")
 
-                        # Séparer les mots de la description et ajouter des boutons pour les mots sans bordure
-                        words = description.split()
-                        description_with_buttons = " ".join([f'<button class="word-button" onclick="document.getElementById(\'hidden_form_{word}\').submit();">{word}</button>' for word in words])
-                        st.markdown(description_with_buttons, unsafe_allow_html=True)
-                        
-                        # Formulaires invisibles pour ajouter les mots
-                        for word in words:
-                            with st.form(key=f"hidden_form_{word}", clear_on_submit=True):
-                                st.form_submit_button(label=word, on_click=lambda w=word: st.session_state.vocab_list.append(w))
-                                
-                        for word in words:
-                            if st.button(word, key=f"{title}_{word}"):  # hidden buttons
-                                st.session_state.vocab_list.append(word)
-                                st.success(f"Added '{word}' to vocabulary list.")
                                 
                     with col2:
                         # Évaluer et afficher le niveau de langue
@@ -163,6 +149,8 @@ if page == "News":
             st.error(f"An error occurred: {e}")
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
+
+
 if page == "Vocabulary List":
     st.header("Vocabulary List")
     if st.session_state.vocab_list:
@@ -172,27 +160,7 @@ if page == "Vocabulary List":
 
 
 
-# Ajouter du style pour cacher les bordures des boutons
-st.markdown("""
-    <style>
-    .word-button {
-        border: none;
-        background: none;
-        color: blue;
-        cursor: pointer;
-        padding: 0;
-        font-size: 1em;
-    }
-    .word-button:hover {
-        text-decoration: underline;
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
-# Fonction pour ajouter un mot à la liste de vocabulaire
-def add_word(word):
-    st.session_state.vocab_list.append(word)
-    st.success(f"Added '{word}' to vocabulary list.")
 
 # Vérifier si un mot a été ajouté via la requête HTTP
 if 'word' in st.experimental_get_query_params():
