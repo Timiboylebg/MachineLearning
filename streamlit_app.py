@@ -135,10 +135,11 @@ if page == "News":
                         st.write(f"[Read more]({url})")
 
                         words = description.split()
-                        description_with_buttons = " ".join([f'<button class="word-button" onclick="document.getElementById(\'{title}_{word}\').click();">{word}</button>' for word in words])
+                        
+                        description_with_buttons = " ".join([f'<button class="word-button" onclick="fetch(\'/add_word?word={word}\')">{word}</button>' for word in words])
                         st.markdown(description_with_buttons, unsafe_allow_html=True)
                         for word in words:
-                            if st.button(word, key=f"{title}_{word}", on_click=None):  # hidden buttons
+                            if st.button(word, key=f"{title}_{word}"):  # hidden buttons
                                 st.session_state.vocab_list.append(word)
                                 st.success(f"Added '{word}' to vocabulary list.")
                                 
@@ -162,3 +163,32 @@ if page == "Vocabulary List":
         st.write(", ".join(st.session_state.vocab_list))
     else:
         st.write("No words added yet.")
+
+
+
+# Ajouter du style pour cacher les bordures des boutons
+st.markdown("""
+    <style>
+    .word-button {
+        border: none;
+        background: none;
+        color: blue;
+        cursor: pointer;
+        padding: 0;
+        font-size: 1em;
+    }
+    .word-button:hover {
+        text-decoration: underline;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Fonction pour ajouter un mot à la liste de vocabulaire
+def add_word(word):
+    st.session_state.vocab_list.append(word)
+    st.success(f"Added '{word}' to vocabulary list.")
+
+# Vérifier si un mot a été ajouté via la requête HTTP
+if 'word' in st.experimental_get_query_params():
+    word_to_add = st.experimental_get_query_params()['word'][0]
+    add_word(word_to_add)
