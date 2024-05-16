@@ -31,7 +31,7 @@ def evaluate_language_level(text):
     else:
         return "C2"
 
-st.image("logo.png", width=200)
+st.sidebar.image("logo.png", width=200)
 
 st.title('Search for a media that interest you')
 
