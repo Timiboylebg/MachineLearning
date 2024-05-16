@@ -16,6 +16,22 @@ api_version = 'v3'
 if 'vocab_list' not in st.session_state:
     st.session_state.vocab_list = []
 
+
+def translate_word(word):
+    url = "https://translation.googleapis.com/language/translate/v2"
+    params = {
+        'q': word,
+        'source': 'fr',
+        'target': 'en',
+        'key': 'AIzaSyC3Abt1-sSdcgg6vrbTPhnc1SHAcU8niGc'
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        return data['data']['translations'][0]['translatedText']
+    else:
+        return "Traduction non trouvée."
+        
 # Fonction pour évaluer le niveau de langue
 def evaluate_language_level(text):
     words = text.split()
@@ -150,13 +166,18 @@ if page == "News":
         except Exception as e:
             st.error(f"An unexpected error occurred: {e}")
 
+if 'vocab_list' not in st.session_state:
+    st.session_state.vocab_list = ["bonjour", "maison", "ordinateur", "chat", "chien"]
+
 
 if page == "Vocabulary List":
     st.header("Vocabulary List")
     if st.session_state.vocab_list:
-        st.write(", ".join(st.session_state.vocab_list))
-    else:
-        st.write("No words added yet.")
+        for word in st.session_state.vocab_list:
+            st.write(f"**{word}**")
+            if st.button(f"Traduire {word}", key=word):
+                translation = translate_word(word)
+                st.write(f"Traduction en anglais: {translation}")
 
 
 
