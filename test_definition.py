@@ -36,6 +36,7 @@ def translate_to_english(word):
 # Streamlit app
 st.title("Word Definition Finder")
 
+
 st.header("French to English Definition")
 word_fr = st.text_input("Enter a word in French:")
 
