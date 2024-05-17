@@ -7,3 +7,4 @@ google-api-python-client
 youtube-transcript-api
 requests
 google-cloud-translate
+googletrans==4.0.0-rc1
