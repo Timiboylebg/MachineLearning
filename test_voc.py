@@ -43,18 +43,23 @@ if page == "French Text & Vocabulary Input":
     st.subheader("Text in French")
     st.write(sample_text)
     
-    st.subheader("Enter words you don't understand (separated by commas):")
-    vocab_input = st.text_area("Vocabulary List", "ex: technologies, indispensables, compagnie")
+    st.subheader("Enter a word you don't understand:")
+    new_word = st.text_input("New Vocabulary Word", "")
     
-    if st.button("Save Vocabulary List"):
-        vocab_list = [word.strip() for word in vocab_input.split(',')]
-        st.session_state['vocab_list'] = vocab_list
-        st.success("Vocabulary list saved!")
+    if st.button("Add Word"):
+        if new_word:
+            st.session_state['vocab_list'].append(new_word.strip())
+            st.success(f"'{new_word}' added to the vocabulary list!")
+        else:
+            st.warning("Please enter a word before adding.")
+    
+    st.subheader("Current Vocabulary List")
+    st.write(", ".join(st.session_state['vocab_list']))
 
 elif page == "Vocabulary List & Definitions":
     st.title("Vocabulary List & Definitions")
     
-    if 'vocab_list' in st.session_state:
+    if st.session_state['vocab_list']:
         vocab_list = st.session_state['vocab_list']
         
         st.subheader("Vocabulary Table")
@@ -68,4 +73,4 @@ elif page == "Vocabulary List & Definitions":
         
         st.table(vocab_data)
     else:
-        st.warning("No vocabulary list found. Please go to the 'French Text & Vocabulary Input' page and enter some words.")
+        st.warning("No vocabulary list found. Please go to the 'French Text & Vocabulary Input' page and add some words.")
