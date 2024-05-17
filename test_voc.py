@@ -7,7 +7,6 @@ from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFoun
 from googletrans import Translator
 from PyDictionary import PyDictionary
 
-
 # Initialize Translator and PyDictionary
 translator = Translator()
 dictionary = PyDictionary()
@@ -34,40 +33,18 @@ communiquer et se divertir. Cependant, il est important de se rappeler de prendr
 et de profiter de la nature et de la compagnie de nos proches.
 """
 
-# Initialize session state for vocabulary list
-if 'vocab_list' not in st.session_state:
-    st.session_state['vocab_list'] = []
-
-# CSS for the fixed position of the vocabulary input section
-st.markdown(
-    """
-    <style>
-    .fixed-vocab-input {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        background-color: #f0f2f6;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Navigation menu
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["French Text & Vocabulary Input", "Vocabulary List & Definitions"])
 
 if page == "French Text & Vocabulary Input":
     st.title("French Text & Vocabulary Input")
-    
+    # Texte en rouge
+    st.markdown('<span style="color:red">French Text & Vocabulary Input</span>', unsafe_allow_html=True)
+
     st.subheader("Text in French")
-    st.markdown('<span style="color:blue; font-size:18px">{}</span>'.format(sample_text.replace('\n', '<br>')), unsafe_allow_html=True)
+    st.write(sample_text)
     
-    st.markdown('<div class="fixed-vocab-input">', unsafe_allow_html=True)
     st.subheader("Enter a word you don't understand:")
     new_word = st.text_input("New Vocabulary Word", "")
     
@@ -80,7 +57,6 @@ if page == "French Text & Vocabulary Input":
     
     st.subheader("Current Vocabulary List")
     st.write(", ".join(st.session_state['vocab_list']))
-    st.markdown('</div>', unsafe_allow_html=True)
 
 elif page == "Vocabulary List & Definitions":
     st.title("Vocabulary List & Definitions")
