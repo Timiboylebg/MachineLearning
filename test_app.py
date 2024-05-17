@@ -23,18 +23,18 @@ def main():
         st.write(f"Traduction en anglais: {translation.text}")
 
     def translate_word(word):
-    """
-    Fonction pour traduire un mot de l'anglais vers le français.
-    
-    Args:
-    word (str): Le mot en anglais à traduire.
-    
-    Returns:
-    str: La traduction en français du mot.
-    """
-    translator = Translator()
-    translation = translator.translate(word, src='en', dest='fr')
-    return translation.text
+        """
+        Fonction pour traduire un mot de l'anglais vers le français.
+        
+        Args:
+        word (str): Le mot en anglais à traduire.
+        
+        Returns:
+        str: La traduction en français du mot.
+        """
+        translator = Translator()
+        translation = translator.translate(word, src='en', dest='fr')
+        return translation.text
 
      # Champ de saisie pour le mot en anglais
     word = st.text_input("Entrez un mot en anglais:")
