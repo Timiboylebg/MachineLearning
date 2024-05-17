@@ -11,7 +11,7 @@ from PyDictionary import PyDictionary
 # Initialize PyDictionary
 dictionary = PyDictionary()
 # Initialize Translator
-translator = Translator(to_lang="fr")
+translator = Translator()
 
 # Function to get a single definition of a word
 def get_single_definition(word):
@@ -23,6 +23,11 @@ def get_single_definition(word):
                 return defs[0]
     return None
 
+# Function to translate text from English to French
+def translate_word(word):
+    translation = translator.translate(word, src='en', dest='fr')
+    return translation.text
+
 # Streamlit app
 st.title("French Word Definition Finder")
 
@@ -31,7 +36,7 @@ word = st.text_input("Enter a word in English:")
 if word:
     definition = get_single_definition(word)
     if definition:
-        translation = translator.translate(definition)
+        translation = translate_word(definition)
         st.write(f"**Definition of {word} in French:**")
         st.write(translation)
     else:
