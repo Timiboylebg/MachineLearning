@@ -35,19 +35,10 @@ def main():
 
     # Utiliser des liens HTML pour chaque mot
     words = text.split()
-    formatted_text = " ".join([f'<a href="javascript:void(0)" onclick="sendWord(\'{word}\')">{word}</a>' for word in words])
-    st.markdown(formatted_text, unsafe_allow_html=True)
-
-    # Ajouter un script JavaScript pour envoyer le mot cliqué à Streamlit
-    st.markdown("""
-        <script>
-        function sendWord(word) {
-            const streamlitApi = window.parent.Streamlit;
-            streamlitApi.setComponentValue(word);
-        }
-        </script>
-    """, unsafe_allow_html=True)
-
+    for word in words:
+        if st.button(word):
+            st.session_state.vocab_list.append(word)
+    
     # Afficher la liste de vocabulaire
     if st.session_state.vocab_list:
         st.write("Votre liste de vocabulaire:")
@@ -55,25 +46,6 @@ def main():
             translation = translate_word(vocab_word)
             st.write(f"{vocab_word} - {translation}")
 
-    # Configurer le composant Streamlit pour recevoir le mot cliqué
-    st.components.v1.html("""
-        <div id="streamlit-mount"></div>
-        <script>
-        const streamlitMount = document.getElementById('streamlit-mount');
-        const handleStreamlitMessage = (event) => {
-            if (event.data.type === 'streamlit:setComponentValue') {
-                streamlitMount.dispatchEvent(new CustomEvent('streamlit:value', { detail: event.data.value }));
-            }
-        };
-        window.addEventListener('message', handleStreamlitMessage);
-        </script>
-    """)
-    
-    # Recevoir le mot cliqué et l'ajouter à la liste de vocabulaire
-    if st.session_state.get('last_word') != st.session_state.get('streamlit_value'):
-        st.session_state['last_word'] = st.session_state.get('streamlit_value')
-        if st.session_state['last_word'] and st.session_state['last_word'] not in st.session_state.vocab_list:
-            st.session_state.vocab_list.append(st.session_state['last_word'])
-
 if __name__ == "__main__":
+    main()
     main()
