@@ -24,22 +24,45 @@ def get_single_definition(word):
     return None
 
 # Function to translate text from English to French
-def translate_word(word):
+def translate_to_french(word):
     translation = translator.translate(word, src='en', dest='fr')
     return translation.text
 
+# Function to translate text from French to English
+def translate_to_english(word):
+    translation = translator.translate(word, src='fr', dest='en')
+    return translation.text
+
 # Streamlit app
-st.title("French Word Definition Finder")
+st.title("Word Definition Finder")
 
-word = st.text_input("Enter a word in English:")
+st.header("English to French Definition")
+word_en = st.text_input("Enter a word in English:")
 
-if word:
-    definition = get_single_definition(word)
+if word_en:
+    definition = get_single_definition(word_en)
     if definition:
-        translation = translate_word(definition)
-        st.write(f"**Definition of {word} in French:**")
-        st.write(translation)
+        translation_fr = translate_to_french(definition)
+        st.write(f"**Definition of {word_en} in French:**")
+        st.write(translation_fr)
     else:
         st.write("No definition found.")
+else:
+    st.write("Please enter a word to get its definition.")
+
+st.header("French to English Definition")
+word_fr = st.text_input("Enter a word in French:")
+
+if word_fr:
+    translation_en = translate_to_english(word_fr)
+    if translation_en:
+        definition_en = get_single_definition(translation_en)
+        if definition_en:
+            st.write(f"**Definition of {word_fr} (translated to {translation_en}) in English:**")
+            st.write(definition_en)
+        else:
+            st.write("No definition found for the translated word.")
+    else:
+        st.write("Translation failed.")
 else:
     st.write("Please enter a word to get its definition.")
