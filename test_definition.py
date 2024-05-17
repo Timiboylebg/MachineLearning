@@ -11,19 +11,26 @@ from PyDictionary import PyDictionary
 # Initialize PyDictionary
 dictionary = PyDictionary()
 
+# Function to get a single definition of a word
+def get_single_definition(word):
+    meaning = dictionary.meaning(word)
+    if meaning:
+        # Choose the first definition from the first part of speech
+        for pos, defs in meaning.items():
+            if defs:
+                return defs[0]
+    return None
+
 # Streamlit app
 st.title("English Word Definition Finder")
 
 word = st.text_input("Enter a word:")
 
 if word:
-    definition = dictionary.meaning(word)
+    definition = get_single_definition(word)
     if definition:
         st.write(f"**Definition of {word}:**")
-        for pos, defs in definition.items():
-            st.write(f"**{pos}:**")
-            for d in defs:
-                st.write(f"- {d}")
+        st.write(definition)
     else:
         st.write("No definition found.")
 else:
