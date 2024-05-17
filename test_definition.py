@@ -10,6 +10,8 @@ from PyDictionary import PyDictionary
 
 # Initialize PyDictionary
 dictionary = PyDictionary()
+# Initialize Translator
+translator = Translator(to_lang="fr")
 
 # Function to get a single definition of a word
 def get_single_definition(word):
@@ -22,15 +24,16 @@ def get_single_definition(word):
     return None
 
 # Streamlit app
-st.title("English Word Definition Finder")
+st.title("French Word Definition Finder")
 
-word = st.text_input("Enter a word:")
+word = st.text_input("Enter a word in English:")
 
 if word:
     definition = get_single_definition(word)
     if definition:
-        st.write(f"**Definition of {word}:**")
-        st.write(definition)
+        translation = translator.translate(definition)
+        st.write(f"**Definition of {word} in French:**")
+        st.write(translation)
     else:
         st.write("No definition found.")
 else:
