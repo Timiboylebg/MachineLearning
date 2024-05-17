@@ -46,6 +46,27 @@ def main():
         # Afficher la traduction
         st.write(f"Traduction en français: {translation}")
 
+    # Exemple de texte en anglais
+    text = "This is an example text where each word can be clicked to add to your vocabulary list."
+    
+    # Liste pour stocker le vocabulaire sélectionné
+    if 'vocab_list' not in st.session_state:
+        st.session_state.vocab_list = []
+
+    # Afficher le texte et permettre de cliquer sur chaque mot
+    st.write("Cliquez sur un mot pour l'ajouter à votre liste de vocabulaire:")
+    words = text.split()
+    for word in words:
+        if st.button(word):
+            st.session_state.vocab_list.append(word)
+    
+    # Afficher la liste de vocabulaire
+    if st.session_state.vocab_list:
+        st.write("Votre liste de vocabulaire:")
+        for vocab_word in st.session_state.vocab_list:
+            translation = translate_word(vocab_word)
+            st.write(f"{vocab_word} - {translation}")
+
 if __name__ == "__main__":
     main()
 
