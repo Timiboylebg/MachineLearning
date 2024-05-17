@@ -56,8 +56,8 @@ if 'vocab_list' not in st.session_state:
 # Afficher le texte et permettre de cliquer sur chaque mot
 st.write("Cliquez sur un mot pour l'ajouter à votre liste de vocabulaire:")
 words = text.split()
-for word in words:
-    if st.button(word):
+for idx, word in enumerate(words):
+    if st.button(word, key=idx):
         st.session_state.vocab_list.append(word)
 
 # Afficher la liste de vocabulaire
