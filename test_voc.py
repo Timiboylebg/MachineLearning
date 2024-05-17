@@ -39,7 +39,9 @@ page = st.sidebar.radio("Go to", ["French Text & Vocabulary Input", "Vocabulary 
 
 if page == "French Text & Vocabulary Input":
     st.title("French Text & Vocabulary Input")
-    
+    # Texte en rouge
+    st.markdown('<span style="color:red">French Text & Vocabulary Input</span>', unsafe_allow_html=True)
+
     st.subheader("Text in French")
     st.write(sample_text)
     
