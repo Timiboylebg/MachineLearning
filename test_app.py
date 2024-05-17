@@ -32,11 +32,9 @@ def main():
 
     # Afficher le texte et permettre de cliquer sur chaque mot
     st.write("Cliquez sur un mot pour l'ajouter à votre liste de vocabulaire:")
-
-    # Utiliser des liens HTML pour chaque mot
     words = text.split()
-    for word in words:
-        if st.button(word):
+    for idx, word in enumerate(words):
+        if st.button(word, key=idx):
             st.session_state.vocab_list.append(word)
     
     # Afficher la liste de vocabulaire
@@ -47,5 +45,6 @@ def main():
             st.write(f"{vocab_word} - {translation}")
 
 if __name__ == "__main__":
+    main()
     main()
     main()
