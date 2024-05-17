@@ -22,7 +22,7 @@ def translate_word(word):
 
 def main():
     st.title("Traducteur Anglais -> Français")
-    
+    st.title(translate_word(Hello)) 
     # Exemple de texte en anglais
     text = "This is an example text where each word can be clicked to add to your vocabulary list."
     
