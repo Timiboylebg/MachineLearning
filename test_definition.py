@@ -36,20 +36,6 @@ def translate_to_english(word):
 # Streamlit app
 st.title("Word Definition Finder")
 
-st.header("English to French Definition")
-word_en = st.text_input("Enter a word in English:")
-
-if word_en:
-    definition = get_single_definition(word_en)
-    if definition:
-        translation_fr = translate_to_french(definition)
-        st.write(f"**Definition of {word_en} in French:**")
-        st.write(f"{word_en} = {translation_fr}")
-    else:
-        st.write("No definition found.")
-else:
-    st.write("Please enter a word to get its definition.")
-
 st.header("French to English Definition")
 word_fr = st.text_input("Enter a word in French:")
 
