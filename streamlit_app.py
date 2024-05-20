@@ -80,7 +80,7 @@ if page == "Videos":
                 video_thumbnail = item['snippet']['thumbnails']['high']['url']
                 video_description = item['snippet']['description']
 
-                col1, col2, col3 = st.columns([1, 2, 1])
+                col1, col2, col3 = st.columns([2, 1, 1])
                 with col1:
                     #st.image(video_thumbnail)
                     st.video(video_url) 
