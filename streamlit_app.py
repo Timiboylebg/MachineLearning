@@ -90,7 +90,7 @@ if page == "Videos":
                         full_text = " ".join([text['text'] for text in transcript])
                         level = evaluate_language_level(full_text)
                         st.write("Language Level:", level)
-                        st.button(f"Level: {level}", key=level)
+                        st.button(f"Level: {level}", key=f"level_{index}")
                     except Exception as e:
                         st.error(f"An error occurred: {str(e)}")
 
