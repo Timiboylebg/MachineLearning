@@ -82,10 +82,10 @@ if page == "Videos":
 
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
-                    st.image(video_thumbnail)
+                    #st.image(video_thumbnail)
+                    st.video(video_url) 
                 with col2:
                     st.write(video_title)
-                    st.video(video_url) 
                 with col3:
                     try:
                         transcript = YouTubeTranscriptApi.get_transcript(video_id)
