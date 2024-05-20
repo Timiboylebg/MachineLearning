@@ -71,14 +71,15 @@ if page == "Videos":
         response = request.execute()
     
         # Afficher les résultats
+         # Display the results
         if response.get('items', []):
-            for item in response['items']:
+            for index, item in enumerate(response['items']):
                 video_title = item['snippet']['title']
                 video_id = item['id']['videoId']
                 video_url = f'https://www.youtube.com/watch?v={video_id}'
                 video_thumbnail = item['snippet']['thumbnails']['high']['url']
                 video_description = item['snippet']['description']
-    
+
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     st.image(video_thumbnail)
@@ -94,12 +95,12 @@ if page == "Videos":
                     except Exception as e:
                         st.error(f"An error occurred: {str(e)}")
 
-                # Bouton pour afficher le transcript
-                if st.button("Show Transcript", key=f"btn_{video_id}"):  # Clé unique pour chaque bouton
+                # Button to show the transcript
+                if st.button("Show Transcript", key=f"btn_{video_id}_{index}"):  # Unique key for each button
                     try:
-                        # Récupération du transcript de la vidéo
+                        # Retrieve the video transcript
                         transcript = YouTubeTranscriptApi.get_transcript(video_id)
-                        # Affichage du transcript
+                        # Display the transcript
                         for text in transcript:
                             st.write(text['text'])
                     except TranscriptsDisabled:
@@ -110,7 +111,7 @@ if page == "Videos":
                         st.error(f"An error occurred: {str(e)}")
                 st.markdown("---")
         else:
-            st.write("Aucun résultat trouvé.")
+            st.write("No results found.")
     
     except HttpError as e:
         st.error("Une erreur s'est produite lors de l'appel à l'API YouTube.")
