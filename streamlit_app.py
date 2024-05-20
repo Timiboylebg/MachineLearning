@@ -85,6 +85,7 @@ if page == "Videos":
                     st.image(video_thumbnail)
                 with col2:
                     st.write(video_title)
+                    st.video(video_url) 
                 with col3:
                     try:
                         transcript = YouTubeTranscriptApi.get_transcript(video_id)
