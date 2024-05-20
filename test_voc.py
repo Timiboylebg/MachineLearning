@@ -33,6 +33,11 @@ communiquer et se divertir. Cependant, il est important de se rappeler de prendr
 et de profiter de la nature et de la compagnie de nos proches.
 """
 
+# Initialize session state for vocab list if it doesn't exist
+if 'vocab_list' not in st.session_state:
+    st.session_state['vocab_list'] = []
+
+
 # Navigation menu
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["French Text & Vocabulary Input", "Vocabulary List & Definitions"])
