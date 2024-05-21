@@ -65,7 +65,7 @@ if page == "Videos":
             order='relevance',
             safeSearch = 'moderate',
             type='video',
-            relevanceLanguage= language,
+            relevanceLanguage= 'fr',
             channelId='UCAuUUnT6oDeKwE6v1NGQxug' 
         )
         response = request.execute()
